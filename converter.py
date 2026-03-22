@@ -35,7 +35,8 @@ def main():
         print('1. Показать курсы')
         print('2. Конвертировать')
         print('3. Добавить валюту')
-        print('4. Выход')
+        print('4. Обновить курс существующей валюты')
+        print('5. Выход')
         print()
         choise = input('Выберите действие: ').strip()
         print()
@@ -79,13 +80,30 @@ def main():
                 continue
 
             # Если все хорошо, добавляем валюту
-            
+
             rates[code] = rate
             save_rates(rates)
 
             print(f'Валюта {code} добавлена с курсом {rate} руб.')
-
         elif choise == '4':
+            code = input('Введите код валюты (например, GBP): ').upper().strip()
+            if code not in rates:
+                print('Введённого кода нет')
+                continue
+            try:
+                rate = float(input(f'Введите новый курс для {code}: '))
+                if rate <= 0:
+                    print('Курс должен быть положительным.')
+                    continue
+            except ValueError:
+                print('Введите число.')
+                continue
+
+            rates[code] = rate
+            save_rates(rates)
+
+            print(f'Курс {code} обновлён на {rate} руб.')
+        elif choise == '5':
             print('До свидания!')
             break
 
